@@ -1,6 +1,7 @@
 package MainPackage;
 
 import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
 
 public class ReceberIncentivos extends Behaviour {
 	private AUInfo aui;
@@ -12,6 +13,8 @@ public class ReceberIncentivos extends Behaviour {
 	@Override
 	public void action() {
 		
+		ACLMessage msg=null;
+		while(msg==null) {msg=myAgent.receive();}
 	}
 
 	@Override
@@ -20,3 +23,4 @@ public class ReceberIncentivos extends Behaviour {
 	}
 	
 }
+ 

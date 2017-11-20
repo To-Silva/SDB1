@@ -8,8 +8,10 @@ public class AUInfo implements Serializable{
 	private int coords[];
 	private AEInfo origem,destino;
 	private double preco;
+	private boolean moving;
 	
 	public AUInfo (AEInfo o,AEInfo d,int c[]){
+		moving=false;
 		origem=o;
 		destino=d;
 		coords=c;
@@ -17,6 +19,23 @@ public class AUInfo implements Serializable{
 	
 	public AEInfo getDestino(){
 		return this.destino;
+	}
+	public AEInfo getOrigem(){
+		return this.origem;
+	}
+	public int[] getCoordinates(){
+		return coords;
+	}
+	public boolean getMovement(){
+		return moving;
+	}
+	
+	public void setCoordinates(int c[]){
+		coords=c
+	}
+	
+	public void setMoving(boolean b){
+		moving=b;
 	}
 	
 	public double getPercentagem(){

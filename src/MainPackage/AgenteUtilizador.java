@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import Taxi.receiveInfo;
-
 
 public class AgenteUtilizador extends Agent {
 	private AUInfo info;
