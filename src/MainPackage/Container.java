@@ -120,16 +120,16 @@ public class Container {
 			Random random = new Random();
 			ArrayList<AEInfo> ael;
 			ArrayList<AUInfo> aul;			
-			int num=1;
+			int num=AEnum;
 			ael=new ArrayList<AEInfo>();
 			aul=new ArrayList<AUInfo>();
 			
 			Container a = new Container();
 			a.initMainContainerInPlatform("localhost", "9888", "Container");
 			
-			while(num<=AEnum){
+			while(num>0){
 				setAECoords(num,ael);
-				num++;
+				num--;
 			}
 			
 			for (AEInfo aei : ael) {
