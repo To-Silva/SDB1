@@ -79,5 +79,10 @@
 	<classpathentry kind="lib" path="C:/Users/To_si/Downloads/JADE-all-4.5.0/jade/lib/jade.jar"/>
 	<classpathentry kind="lib" path="C:/Users/To_si/Downloads/Jess71p2/lib/jess.jar"/>
 	<classpathentry kind="lib" path="C:/Users/To_si/Downloads/Jess71p2/lib/jsr94.jar"/>
+	<classpathentry kind="lib" path="C:/Users/To_si/Desktop/Models/Shared Folder/jfreechart-1.0.1/lib/gnujaxp.jar"/>
+	<classpathentry kind="lib" path="C:/Users/To_si/Desktop/Models/Shared Folder/jfreechart-1.0.1/lib/jcommon-1.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/To_si/Desktop/Models/Shared Folder/jfreechart-1.0.1/lib/jfreechart-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/To_si/Desktop/Models/Shared Folder/jfreechart-1.0.1/lib/junit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/To_si/Desktop/Models/Shared Folder/jfreechart-1.0.1/lib/servlet.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

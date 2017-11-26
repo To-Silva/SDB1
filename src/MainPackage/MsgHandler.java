@@ -51,7 +51,6 @@ public class MsgHandler extends Behaviour {
 				System.out.println("AU leaving APE.");
 				usersInAPE.remove(msg.getSender());
 			}else if (content.equals("F")){
-				System.out.println(aei.getAENum()+" received 1 bic");
 				aei.updateBicNum(1);
 				if (!lobby.isEmpty()){
 					t=lobby.remove();
@@ -63,7 +62,6 @@ public class MsgHandler extends Behaviour {
 			}else if (content.equals("R")){
 				if (aei.getNivel()<1.0) myAgent.addBehaviour(new Negotiate(aei,usersInAPE,precoPorDist,msg.getSender()));
 			}else{
-				System.out.println(aei.getAENum()+" has 1 customer");
 				destination=Integer.parseInt(content.split("-")[1]);
 				
 				if (aei.getBicNum()!=0.0){

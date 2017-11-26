@@ -45,7 +45,7 @@ public class PercorrerPercurso extends Behaviour{
 		}
 		if (aui.getPercentagem()!=1.0) {
 			block(1000);
-		}else{this.done();}
+		}
 		
 	}
 	

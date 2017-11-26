@@ -9,12 +9,19 @@ public class AUInfo{
 	private int coords[];
 	private AEInfo origem,destino;
 	private double preco,distance;
-	private boolean moving;
+	private boolean moving,finished,started;
+	private String name;
 	
-	public AUInfo (int c[]){
+	public AUInfo (int c[],String n){
+		started=false;
 		moving=false;
+		finished=false;
 		coords=c;
-		
+		name=n;
+	}
+	
+	public String getName(){
+		return name;
 	}
 	
 	public double getPrecoPMetro(){
@@ -24,6 +31,8 @@ public class AUInfo{
 	public double getRemaining(){
 		return Math.sqrt((destino.getCoords()[0]-coords[0])*(destino.getCoords()[0]-coords[0])+(destino.getCoords()[1]-coords[1])*(destino.getCoords()[1]-coords[1]));
 	}
+	
+	
 	public void setDestino(AEInfo d){
 		destino=d;
 	}
@@ -49,10 +58,19 @@ public class AUInfo{
 		destino=d;
 	}
 	
+	public synchronized boolean getStatus(){
+		return finished||!started;
+	}	
+	
+	public synchronized void finished(){
+		finished=true;
+	}
+	
 	public void setDistance(double d){
 		distance=d;
 	}
 	public synchronized void setCoordinates(int c[]){
+		if (!started) started=true;
 		coords=c;
 	}
 	

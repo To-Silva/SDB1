@@ -29,16 +29,18 @@ public class Negotiate extends OneShotBehaviour {
 	@Override
 	public void action() {
 		double incentivo;
-		System.out.println((mapIncentivos.get(au)+stride)+" <= "+aei.getThreshold());
-		if (mapIncentivos.get(au)+stride<=aei.getThreshold()){
-			System.out.println(aei.getAENum()+" is negotiating!");
-			incentivo=mapIncentivos.get(au)+stride;
-			mapIncentivos.put(au,incentivo);
-			
-			ACLMessage entry=new ACLMessage(ACLMessage.INFORM);
-			entry.addReceiver(au);
-			entry.setContent(String.valueOf(incentivo));
-			myAgent.send(entry);
+		if (mapIncentivos.containsKey(au)){
+			System.out.println((mapIncentivos.get(au)+stride)+" <= "+aei.getThreshold());
+			if (mapIncentivos.get(au)+stride<=aei.getThreshold()){
+				System.out.println(aei.getAENum()+" is negotiating!");
+				incentivo=mapIncentivos.get(au)+stride;
+				mapIncentivos.put(au,incentivo);
+				
+				ACLMessage entry=new ACLMessage(ACLMessage.INFORM);
+				entry.addReceiver(au);
+				entry.setContent(String.valueOf(incentivo));
+				myAgent.send(entry);
+			}
 		}
 	}
 

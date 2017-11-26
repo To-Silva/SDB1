@@ -33,6 +33,7 @@ public class AgenteUtilizador extends Agent {
 
 	@Override
 	protected void setup() {
+ 
 		Object[] args = getArguments();
 		aelist=new HashMap<AID,AEInfo>();
 		
@@ -66,6 +67,7 @@ public class AgenteUtilizador extends Agent {
 				entrega.addReceiver(info.getDestino().getAgent());
 				entrega.setContent("F");
 				myAgent.send(entrega);
+				info.finished();
 				return 0;					
 			}
 		};
