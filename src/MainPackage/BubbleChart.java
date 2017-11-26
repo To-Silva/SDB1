@@ -61,7 +61,7 @@ public class BubbleChart extends ApplicationFrame {
 	    setContentPane(panel);
    }
 
-   public void addData(){
+   public synchronized void addData(){
 
 		for(AUInfo au : aul){
 			if (!au.getStatus()){

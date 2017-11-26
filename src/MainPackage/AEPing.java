@@ -28,7 +28,7 @@ public class AEPing extends Behaviour {
 	
 	@Override
 	public void action() {
-		double thrsh=1.0/2.0;
+		double thrsh=3.0/4.0;
 		if(aui.getPercentagem()>thrsh){
 		//send ping to AE when entering or leaving APE
 		

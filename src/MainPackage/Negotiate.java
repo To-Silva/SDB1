@@ -30,9 +30,8 @@ public class Negotiate extends OneShotBehaviour {
 	public void action() {
 		double incentivo;
 		if (mapIncentivos.containsKey(au)){
-			System.out.println((mapIncentivos.get(au)+stride)+" <= "+aei.getThreshold());
 			if (mapIncentivos.get(au)+stride<=aei.getThreshold()){
-				System.out.println(aei.getAENum()+" is negotiating!");
+				
 				incentivo=mapIncentivos.get(au)+stride;
 				mapIncentivos.put(au,incentivo);
 				

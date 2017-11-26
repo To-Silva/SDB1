@@ -39,10 +39,10 @@ public class ReceberIncentivos extends Behaviour {
 			if((incentivo/aui.getRemaining())>=aui.getPrecoPMetro() && !existeMelhor(aui.getCoordinates(),incentivo)){
 				response.setContent("A"); //Aceitar
 				aui.updateDestination(aelist.get(msg.getSender()));
-				System.out.println("Aceitando incentivo de: "+incentivo+" proveniente de: "+msg.getSender().getLocalName());
+				System.out.println(myAgent.getAID().getLocalName()+" aceitando incentivo de: "+incentivo+" proveniente de: "+msg.getSender().getLocalName());
 			}else{	
+				System.out.println(myAgent.getAID().getLocalName()+" rejeitando incentivo de: "+incentivo+" proveniente de: "+msg.getSender().getLocalName());
 				response.setContent("R"); //Rejeitar
-				System.out.println("Rejeitando incentivo de: "+incentivo+" proveniente de: "+msg.getSender().getLocalName());
 			}
 			myAgent.send(response);
 		}else{

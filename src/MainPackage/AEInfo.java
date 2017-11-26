@@ -28,7 +28,7 @@ public class AEInfo {
 	
 	public double getThreshold(){
 		if (nivel==0.0){
-			threshold=10000.0; //"infinite"
+			threshold=10000.0; // aumentar indefinidamente
 		}else if (nivel>0.0&&nivel<1.0/2.0){
 			threshold=precoMedio;
 		}else if (nivel>=1.0/2.0 && nivel<1.0){
@@ -41,7 +41,7 @@ public class AEInfo {
 		return coords;
 	}
 
-	public synchronized double getBicNum(){
+	public double getBicNum(){
 		return bicNum;
 	}
 	

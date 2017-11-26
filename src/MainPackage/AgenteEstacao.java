@@ -26,11 +26,7 @@ import jade.lang.acl.ACLMessage;
 public class AgenteEstacao extends Agent {
 	private AEInfo aei;
 	private double precoPorDist;
-	private int sum,num;
 	private HashMap<AID,Double> mapIncentivos;
-	private BlockingQueue<AID> closeAUs;
-	private BlockingQueue<Bicicleta> bicicletas;
-	private BlockingQueue<Ticket> lobby;	
 	private HashMap<Integer,Double> distances;
 	private BlockingQueue<Map.Entry<AID,Boolean>> answers;
 
@@ -43,7 +39,6 @@ public class AgenteEstacao extends Agent {
 		this.precoPorDist=(Double) args[0];
 		aei=(AEInfo) args[1];
 		aei.setAgent(this.getAID());
-		sum=num=0;
 		mapIncentivos=new HashMap<AID,Double>();
 		this.distances=(HashMap<Integer, Double>) args[2];
 		addBehaviour(new MsgHandler(aei,mapIncentivos,distances,precoPorDist));

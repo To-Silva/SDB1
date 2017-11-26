@@ -44,11 +44,11 @@ public class MsgHandler extends Behaviour {
 			content=msg.getContent();
 			
 			if (content.equals("E")){
-				System.out.println("AU entering APE.");
+				System.out.println("AU entering "+myAgent.getAID().getLocalName()+"'s APE.");
 				usersInAPE.put(msg.getSender(),0.0);
-				if (aei.getNivel()<1.0) myAgent.addBehaviour(new Negotiate(aei,usersInAPE,precoPorDist,msg.getSender()));				
+				if (aei.getNivel()<1.0) {myAgent.addBehaviour(new Negotiate(aei,usersInAPE,precoPorDist,msg.getSender()));block();};				
 			}else if (content.equals("L")){
-				System.out.println("AU leaving APE.");
+				System.out.println("AU leaving AE"+aei.getAENum()+"'s APE.");
 				usersInAPE.remove(msg.getSender());
 			}else if (content.equals("F")){
 				aei.updateBicNum(1);
@@ -60,7 +60,7 @@ public class MsgHandler extends Behaviour {
 			}else if (content.equals("A")){
 				usersInAPE.remove(msg.getSender());
 			}else if (content.equals("R")){
-				if (aei.getNivel()<1.0) myAgent.addBehaviour(new Negotiate(aei,usersInAPE,precoPorDist,msg.getSender()));
+				if (aei.getNivel()<1.0) {myAgent.addBehaviour(new Negotiate(aei,usersInAPE,precoPorDist,msg.getSender()));block();};
 			}else{
 				destination=Integer.parseInt(content.split("-")[1]);
 				
