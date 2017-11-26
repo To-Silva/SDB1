@@ -1,44 +1,66 @@
 package MainPackage;
 
 import jade.util.leap.Serializable;
+import jess.Rete;
 
 import java.util.Random;
 
-public class AUInfo implements Serializable{
+public class AUInfo{
 	private int coords[];
 	private AEInfo origem,destino;
-	private double preco;
+	private double preco,distance;
 	private boolean moving;
 	
-	public AUInfo (AEInfo o,AEInfo d,int c[]){
+	public AUInfo (int c[]){
 		moving=false;
-		origem=o;
-		destino=d;
 		coords=c;
+		
 	}
 	
+	public double getPrecoPMetro(){
+		return preco/distance;
+	}
+	
+	public double getRemaining(){
+		return Math.sqrt((destino.getCoords()[0]-coords[0])*(destino.getCoords()[0]-coords[0])+(destino.getCoords()[1]-coords[1])*(destino.getCoords()[1]-coords[1]));
+	}
+	public void setDestino(AEInfo d){
+		destino=d;
+	}
+	public void setOrigem(AEInfo o){
+		origem=o;
+	}	
 	public AEInfo getDestino(){
 		return this.destino;
 	}
 	public AEInfo getOrigem(){
 		return this.origem;
 	}
-	public int[] getCoordinates(){
+	public synchronized int[] getCoordinates(){
 		return coords;
 	}
 	public boolean getMovement(){
 		return moving;
 	}
+	public double getDistance(){
+		return distance;
+	}
+	public void updateDestination(AEInfo d){
+		destino=d;
+	}
 	
-	public void setCoordinates(int c[]){
-		coords=c
+	public void setDistance(double d){
+		distance=d;
+	}
+	public synchronized void setCoordinates(int c[]){
+		coords=c;
 	}
 	
 	public void setMoving(boolean b){
 		moving=b;
 	}
 	
-	public double getPercentagem(){
+	public synchronized double getPercentagem(){
 		int ocoords[],dcoords[];
 		
 		ocoords=origem.getCoords();
@@ -46,7 +68,7 @@ public class AUInfo implements Serializable{
 		double dist=Math.sqrt((coords[0]-ocoords[0])*(coords[0]-ocoords[0])+(coords[1]-ocoords[1])*(coords[1]-ocoords[1]));
 		double fullDist=Math.sqrt((dcoords[0]-ocoords[0])*(dcoords[0]-ocoords[0])+(dcoords[1]-ocoords[1])*(dcoords[1]-ocoords[1]));
 		
-		return (dist/fullDist);
+		return Math.abs(dist/fullDist);
 	}
 	
 	public void setPreco(double p){

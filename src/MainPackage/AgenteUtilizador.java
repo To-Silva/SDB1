@@ -1,27 +1,48 @@
 package MainPackage;
 
+import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.ParallelBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.lang.acl.ACLMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 
 
 public class AgenteUtilizador extends Agent {
 	private AUInfo info;
-	private ArrayList<AEInfo> aelist;
+	private HashMap<AID,AEInfo> aelist;
+	private HashMap<Double,AEInfo> incentivos;
 	private AEInfo origem,destino;
 	private double shortestDist;
 	
-	public AgenteUtilizador(AUInfo aui){
-		this.info=aui;
+
+	@Override
+	protected void setup() {
+		Object[] args = getArguments();
+		aelist=new HashMap<AID,AEInfo>();
+		
+		this.incentivos=(HashMap<Double, AEInfo>) args[2];
+		this.info=(AUInfo) args[0];
 		int[] coords=new int[2];
+		ArrayList<AEInfo> aes=(ArrayList<AEInfo>) args[1];
+		for(AEInfo ae : aes){
+			aelist.put(ae.getAgent(), ae);
+		}
 		
 		Random random = new Random();
 		coords[0]=random.nextInt(100 - 0 + 1) + 0;
@@ -31,34 +52,32 @@ public class AgenteUtilizador extends Agent {
 			coords[0]=random.nextInt(100 - 0 + 1) + 0;
 			coords[1]=random.nextInt(100 - 0 + 1) + 0;
 			destino=getClosestAE(coords);
-		}while(origem.getAENum()!=destino.getAENum());
-		info=new AUInfo(origem,destino,coords);
+		}while(origem.getAENum()==destino.getAENum());
+        info.setDestino(destino);
+        info.setOrigem(origem);
+        info.setCoordinates(origem.getCoords());
+
+		PagarPercurso();
 		
-		DFAgentDescription dfd =new DFAgentDescription();
-		dfd.setName(getAID());
-		ServiceDescription sd = new ServiceDescription();
-		sd.setType("AU");
-		sd.setName(this.getAID().toString());
-		dfd.addServices(sd);	
-        try {  
-            DFService.register(this, dfd );  
-        }
-        catch (FIPAException fe) { fe.printStackTrace(); }
-        
-        
-	}
-	
-	@Override
-	protected void setup() {		
-		addBehaviour(new PagarPercurso(info,origem));
 		ParallelBehaviour b= new ParallelBehaviour(this,ParallelBehaviour.WHEN_ANY) {
 			@Override
 			public int onEnd() {
-				return 0;
+				ACLMessage entrega=new ACLMessage(ACLMessage.INFORM);
+				entrega.addReceiver(info.getDestino().getAgent());
+				entrega.setContent("F");
+				myAgent.send(entrega);
+				return 0;					
 			}
 		};
-		b.addSubBehaviour(new PercorrerPercurso(info,shortestDist));
-		b.addSubBehaviour(new ReceberIncentivos(info));
+		
+		info.setDistance(Math.sqrt(Math.pow(destino.getCoords()[0]-origem.getCoords()[0], 2)+Math.pow(destino.getCoords()[1]-origem.getCoords()[1], 2)));
+		
+		b.addSubBehaviour(new PercorrerPercurso(info));
+		b.addSubBehaviour(new AEPing(info,aes));
+		b.addSubBehaviour(new ReceberIncentivos(info,incentivos,aelist));
+		
+		addBehaviour(b);
+		
 	}
 	
 	public AEInfo getClosestAE (int c[]){
@@ -66,13 +85,13 @@ public class AgenteUtilizador extends Agent {
 		double dist;
 		AEInfo closest,curr;
 		
-		Iterator<AEInfo> it = aelist.iterator();
-		closest=it.next();
+		Iterator<HashMap.Entry<AID,AEInfo>> it = aelist.entrySet().iterator();
+		closest=it.next().getValue();
 		aeCoords=closest.getCoords();
 		shortestDist=Math.sqrt((aeCoords[0]-c[0])*(aeCoords[0]-c[0])+(aeCoords[1]-c[1])*(aeCoords[1]-c[1]));
 		
 		while (it.hasNext()) {
-			curr=it.next();
+			curr=it.next().getValue();
 			aeCoords=curr.getCoords();
 			dist=Math.sqrt((aeCoords[0]-c[0])*(aeCoords[0]-c[0])+(aeCoords[1]-c[1])*(aeCoords[1]-c[1]));
 			if (dist<shortestDist){
@@ -83,4 +102,20 @@ public class AgenteUtilizador extends Agent {
 		
 		return closest;
 	}
+	
+	public void PagarPercurso() {
+		String paymentDetails;
+		ACLMessage entry=new ACLMessage(ACLMessage.INFORM);
+		entry.addReceiver(info.getOrigem().getAgent());
+		entry.setContent("D-"+info.getDestino().getAENum());
+		send(entry);
+		
+		ACLMessage msg=null;
+		while(msg==null) {msg=receive();}
+		paymentDetails=msg.getContent();
+		info.setPreco(Double.parseDouble(paymentDetails));			
+		
+	}	
+	
+	
 }

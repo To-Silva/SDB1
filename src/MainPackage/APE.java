@@ -4,8 +4,10 @@ public class APE {
 	private int centerX,centerY;
 	private double radius;
 	
-	public APE(){
-		
+	public APE(int cx,int cy){
+		radius=25;
+		centerX=cx;
+		centerY=cy;
 	}
 	
 	public int getCenterX(){
